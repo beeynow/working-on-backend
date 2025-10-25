@@ -1,0 +1,65 @@
+
+// ==================== config/clerk.js ====================
+const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node');
+
+const clerkConfig = {
+  publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+  secretKey: process.env.CLERK_SECRET_KEY,
+};
+
+// Validate Clerk configuration
+if (!clerkConfig.publishableKey || !clerkConfig.secretKey) {
+  throw new Error('Missing Clerk configuration. Please set CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY in .env');
+}
+
+module.exports = {
+  clerkConfig,
+  requireAuth: ClerkExpressRequireAuth({ 
+    secretKey: clerkConfig.secretKey 
+  })
+};
+
+// ==================== .env.example ====================
+/*
+# Server Configuration
+NODE_ENV=development
+PORT=5000
+FRONTEND_URL=http://localhost:3000
+
+# Database (PostgreSQL/Supabase)
+DATABASE_URL=postgresql://user:password@localhost:5432/convertme
+
+# Clerk Authentication
+CLERK_PUBLISHABLE_KEY=pk_test_xxxxx
+CLERK_SECRET_KEY=sk_test_xxxxx
+CLERK_WEBHOOK_SECRET=whsec_xxxxx
+
+# Cloud Storage (Optional - AWS S3)
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=us-east-1
+AWS_BUCKET_NAME=convertme-files
+
+# Cloud Storage (Optional - Cloudinary)
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+# AI Services (Optional)
+TESSERACT_PATH=/usr/bin/tesseract
+OPENAI_API_KEY=
+
+# Rate Limiting
+MAX_FREE_UPLOADS_PER_DAY=3
+MAX_PREMIUM_UPLOADS_PER_DAY=1000
+
+# File Size Limits (in bytes)
+MAX_FREE_FILE_SIZE=5242880
+MAX_PREMIUM_FILE_SIZE=104857600
+
+# Allowed File Types
+ALLOWED_FILE_TYPES=pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png,svg,gif,webp
+
+# Session & Security
+SESSION_SECRET=your-super-secret-session-key-change-this
+*/
